@@ -36,9 +36,13 @@ class Order extends Model
             $order->order_number = $order_number;
         });
         static::created(function ($order){
-            $order->customer->notify(new OrderPlaced());
+            $order->products()->delete();
+            $order->grand_total = self::addOrderDetails($order);
+
+            $order->saveQuietly();
+            $order->customer->notify(new OrderPlaced($order));
         });
-        static::saved(function ($order){
+        static::updated(function ($order){
             $order->products()->delete();
             $order->grand_total = self::addOrderDetails($order);
 

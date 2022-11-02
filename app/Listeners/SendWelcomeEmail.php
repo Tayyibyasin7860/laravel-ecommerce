@@ -27,6 +27,6 @@ class SendWelcomeEmail
      */
     public function handle(Registered $event)
     {
-        $event->user->notify(new SendWelcomeEmailNotification());
+        $event->user->notify(new SendWelcomeEmailNotification($event->user));
     }
 }

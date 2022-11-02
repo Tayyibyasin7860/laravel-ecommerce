@@ -21,8 +21,6 @@ return new class extends Migration
             ->onDelete('cascade')->onUpdate('no action');
 
             $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')
-                ->onDelete('cascade')->onUpdate('no action');
 
             $table->string('product_name');
             $table->string('product_sku');

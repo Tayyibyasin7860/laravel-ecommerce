@@ -20,6 +20,7 @@ class TransactionFactory extends Factory
         return [
             'order_id' => Order::all()->random()->id,
             'transaction_no' => fake()->unique()->randomNumber("6"),
+            'amount' => fake()->randomNumber("4"),
             'status' => fake()->randomElement(['Paid','Refund']),
         ];
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\OrderCrudController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------------
@@ -18,5 +19,7 @@ Route::group([
 ], function () { // custom admin routes
     Route::crud('product', 'ProductCrudController');
     Route::crud('order', 'OrderCrudController');
+    Route::get('api/user', [OrderCrudController::class, '']);
     Route::crud('transaction', 'TransactionCrudController');
+    Route::crud('user', 'UserCrudController');
 }); // this should be the absolute last line of this file

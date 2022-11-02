@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,14 +12,15 @@ class TransactionStatusUpdated extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $transaction;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Transaction $transaction)
     {
-        //
+        $this->transaction = $transaction;
     }
 
     /**
@@ -40,10 +42,8 @@ class TransactionStatusUpdated extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new MailMessage)->subject("Transaction Update for Order # " . $this->transaction->order->order_number)
+                    ->markdown('mail.transaction', ['transaction' => $this->transaction]);
     }
 
     /**

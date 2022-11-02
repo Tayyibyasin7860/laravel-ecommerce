@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\TransactionRequest;
+use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class TransactionCrudController
+ * Class UserCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class TransactionCrudController extends CrudController
+class UserCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class TransactionCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Transaction::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction');
-        CRUD::setEntityNameStrings('transaction', 'transactions');
+        CRUD::setModel(\App\Models\User::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
+        CRUD::setEntityNameStrings('user', 'users');
     }
 
     /**
@@ -39,12 +39,9 @@ class TransactionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('created_at')->label('Transaction Date');
-        CRUD::column('order_id')->attribute('order_number')
-            ->label('Order #');
-        CRUD::column('transaction_no');
-        CRUD::column('amount');
-        CRUD::column('status');
+        CRUD::column('name');
+        CRUD::column('email');
+        CRUD::column('password');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -61,13 +58,12 @@ class TransactionCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(TransactionRequest::class);
+        CRUD::setValidation(UserRequest::class);
 
-        CRUD::field('order_id')
-            ->attribute('order_number')
-            ->label('Order #');
-        CRUD::field('amount')->type('number');
-        CRUD::field('status')->type('enum');
+        CRUD::field('name');
+        CRUD::field('email');
+        CRUD::field('password');
+        CRUD::field('confirm_password')->type('password');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -85,15 +81,5 @@ class TransactionCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    protected function setupShowOperation()
-    {
-        CRUD::column('created_at')->label('Transaction Date');
-        CRUD::column('order_id')->attribute('order_number')
-            ->label('Order #');
-        CRUD::column('transaction_no');
-        CRUD::column('amount');
-        CRUD::column('status');
     }
 }

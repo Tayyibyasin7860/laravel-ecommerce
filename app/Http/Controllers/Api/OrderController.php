@@ -17,7 +17,9 @@ class OrderController extends BaseController
 {
     public function index()
     {
-        $orders = Order::all();
+        $user = auth('sanctum')->user();
+
+        $orders = Order::where('user_id',$user->id)->get();
 
         return $this->sendResponse(OrderResource::collection($orders), 'Orders retrieved successfully.');
     }
@@ -34,15 +36,37 @@ class OrderController extends BaseController
                 return $this->sendError('Order not found.');
             }
         }
+        $user = auth('sanctum')->user();
+
+        if (!($order->user_id == $user->id)){
+            return $this->sendError('You dont have permission to view this order.');
+        }
 
         return $this->sendResponse(new OrderResource($order), 'Order retrieved successfully.');
     }
 
-    public function destroy(Order $order)
+    public function destroy($order)
     {
-        $order->delete();
+        try {
+            $order = Order::findOrFail($order);
+        }
+        catch (Exception $exception){
+            if ($exception instanceof ModelNotFoundException){
 
-        return $this->sendResponse([], 'Order deleted successfully.');
+                return $this->sendError('Order not found.');
+            }
+        }
+        $user = auth('sanctum')->user();
+
+        if ($order->user_id == $user->id){
+            $order->delete();
+            return $this->sendResponse([], 'Order deleted successfully.');
+
+        }
+        else{
+            return $this->sendError('You dont have permission to delete this order.');
+        }
+
     }
 
     public function store(Request $request)

@@ -69,10 +69,9 @@ class OrderCrudController extends CrudController
     {
         CRUD::setValidation(OrderRequest::class);
 
-        CRUD::field('user_id')->type('select')
-            ->model(User::class)
-            ->attribute('name')
-            ->entity('customer');
+        CRUD::field('user_id')->type('select2_from_array')
+            ->options(User::pluck("name","id")->toArray());
+
 
         Crud::addField([
             'name'=>'product_id',
@@ -113,7 +112,10 @@ class OrderCrudController extends CrudController
     {
         CRUD::column('order_number');
         CRUD::column('user_id')
-            ->model(User::class)->attribute('name')->entity('customer');
+            ->type('select')
+            ->model(User::class)
+            ->attribute('name')
+            ->entity('customer');
         CRUD::column('grand_total');
         CRUD::column('status');
         CRUD::column('payment_status');

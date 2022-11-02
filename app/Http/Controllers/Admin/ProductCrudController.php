@@ -41,7 +41,6 @@ class ProductCrudController extends CrudController
     {
         CRUD::column('sku');
         CRUD::column('name');
-        CRUD::column('quantity');
         CRUD::column('price');
         CRUD::column('status')->type("select_from_array")
         ->options([1 => "Enabled", 0 => "Disabled"]);
@@ -64,7 +63,6 @@ class ProductCrudController extends CrudController
         CRUD::setValidation(ProductRequest::class);
 
         CRUD::field('name');
-        CRUD::field('quantity')->type('number');
         CRUD::field('price')->type('number');
         CRUD::field('description');
 
@@ -93,7 +91,6 @@ class ProductCrudController extends CrudController
 
         CRUD::column('sku');
         CRUD::column('name');
-        CRUD::column('quantity');
         CRUD::column('price');
         CRUD::column('status')->type("select_from_array")
             ->options([1 => "Enabled", 0 => "Disabled"]);

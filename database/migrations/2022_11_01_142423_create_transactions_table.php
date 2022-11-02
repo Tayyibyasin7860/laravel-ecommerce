@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('order_id')->references('id')->on('orders')
                 ->onDelete('cascade')->onUpdate('no action');
             $table->string('transaction_no');
+            $table->decimal('amount', 8, 2);
             $table->enum('status', ['Paid','Refund'])->default('Paid');
             $table->timestamps();
         });

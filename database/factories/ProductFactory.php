@@ -18,7 +18,8 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->randomElement(["iPhone 9","iPhone X","Samsung Universe 9","OPPOF19","Huawei P30",
+            "Samsung Galaxy Book","Infinix INBOOK","HP Pavilion 15-DK1056WM"]) . fake()->randomNumber(1),
             'sku' => fake()->unique()->randomNumber("6"),
             'description' => fake()->text(),
             'price' => fake()->randomNumber("4"),

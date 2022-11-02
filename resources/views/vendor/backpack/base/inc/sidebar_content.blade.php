@@ -2,6 +2,7 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
 
 
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('product') }}"><i class="nav-icon la la-question"></i> Products</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('order') }}"><i class="nav-icon la la-question"></i> Orders</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction') }}"><i class="nav-icon la la-question"></i> Transactions</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="las la-user"></i> Users</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('product') }}"><i class="las la-box"></i> Products</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('order') }}"><i class="las la-tasks"></i> Orders</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction') }}"><i class="las la-file-invoice-dollar"></i> Transactions</a></li>
