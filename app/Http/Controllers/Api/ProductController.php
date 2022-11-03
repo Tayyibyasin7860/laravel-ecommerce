@@ -14,8 +14,7 @@ class ProductController extends BaseController
 {
     public function index()
     {
-        $user = auth('sanctum')->user();
-        $products = Product::where('user_id',$user->id)->get();
+        $products = Product::all();
 
         return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
     }
