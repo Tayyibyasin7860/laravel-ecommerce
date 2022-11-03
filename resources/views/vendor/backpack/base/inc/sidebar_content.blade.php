@@ -3,6 +3,6 @@
 
 
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="las la-user"></i> Users</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('product') }}"><i class="las la-box"></i> Products</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('order') }}"><i class="las la-tasks"></i> Orders</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('product') }}"><i class="las la-store-alt"></i> Products</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('order') }}"><i class="las la-shopping-cart"></i> Orders</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction') }}"><i class="las la-file-invoice-dollar"></i> Transactions</a></li>

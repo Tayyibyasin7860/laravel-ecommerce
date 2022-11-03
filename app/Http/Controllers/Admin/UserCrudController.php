@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserCrudController
@@ -14,8 +17,8 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class UserCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
@@ -41,7 +44,6 @@ class UserCrudController extends CrudController
     {
         CRUD::column('name');
         CRUD::column('email');
-        CRUD::column('password');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,28 +60,53 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
+        $this->addUserFields();
+        CRUD::setValidation(UserCreateRequest::class);
+    }
 
+
+    public function setupUpdateOperation()
+    {
+        $this->addUserFields();
+        CRUD::setValidation(UserUpdateRequest::class);
+    }
+    protected function addUserFields()
+    {
         CRUD::field('name');
         CRUD::field('email');
         CRUD::field('password');
         CRUD::field('confirm_password')->type('password');
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
+    public function store()
     {
-        $this->setupCreateOperation();
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitStore();
+    }
+
+    public function update()
+    {
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitUpdate();
+    }
+    protected function handlePasswordInput($request)
+    {
+        // Remove fields not present on the user.
+        $request->request->remove('password_confirmation');
+
+        // Encrypt password if specified.
+        if ($request->input('password')) {
+            $request->request->set('password', Hash::make($request->input('password')));
+        } else {
+            $request->request->remove('password');
+        }
+
+        return $request;
     }
 }
